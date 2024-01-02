@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-   use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -19,15 +19,18 @@ class Role extends Model
         'name',
         'company_id',
     ];
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
 
-    public function responsibilites(){
+    public function responsibilities()
+    {
         return $this->hasMany(Responsibility::class);
     }
 
-    public function employees(){
+    public function employees()
+    {
         return $this->hasMany(Employee::class);
     }
 }
