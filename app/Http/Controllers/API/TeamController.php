@@ -82,7 +82,7 @@ class TeamController extends Controller
             //update data team
             $team->update([
                 'name' => $request->name,
-                'icon' => $path,
+                'icon' => isset($path) ? $path : $team->icon,
                 'company_id' => $request->company_id,
             ]);
 
