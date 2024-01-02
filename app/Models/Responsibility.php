@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Responsibility extends Model
 {
-  use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -17,9 +17,10 @@ class Responsibility extends Model
      */
     protected $fillable = [
         'name',
-        'logo',
+        'role_id',
     ];
-    public function role(){
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 }

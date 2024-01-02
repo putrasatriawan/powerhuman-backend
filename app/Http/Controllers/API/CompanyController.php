@@ -80,9 +80,7 @@ class CompanyController extends Controller
     public function update(UpdateCompanyRequest $request, $id)
     {
         try {
-
             $company = Company::find($id);
-
             //jika company tidak ada maka return error
             if (!$company) {
                 throw new Exception('Company not found');
