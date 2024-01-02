@@ -62,7 +62,7 @@ class CompanyController extends Controller
 
             //jika company tidak ada maka return error
             if (!$company) {
-                throw new Exception('Company not created');
+                throw new Exception('Company Not created');
             }
 
             //menambahkan company ke user ke table company_user
