@@ -26,7 +26,7 @@ class EmpoloyeeController extends Controller
         $limit = $request->input('limit', 10);
 
         //mencari data employee berdasarkan id
-        $employeesQuery = Employee::query();
+        $employeesQuery = Employee::with('team', 'role');
         if ($id) {
             $employee = $employeesQuery->with(['team', 'role'])->find($id);
 
@@ -89,7 +89,7 @@ class EmpoloyeeController extends Controller
                 'gender' => $request->gender,
                 'age' => $request->age,
                 'phone' => $request->phone,
-                'photo' => $path,
+                'photo' =>  isset($path) ? $path : "",
                 'team_id' => $request->team_id,
                 'role_id' => $request->role_id,
             ]);

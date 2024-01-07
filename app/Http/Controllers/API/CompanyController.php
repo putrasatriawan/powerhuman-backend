@@ -57,7 +57,7 @@ class CompanyController extends Controller
             //membuat data company
             $company = Company::create([
                 'name' => $request->name,
-                'logo' => $path
+                'logo' => isset($path) ? $path : '',
             ]);
 
             //jika company tidak ada maka return error

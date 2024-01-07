@@ -21,7 +21,7 @@ class RoleController extends Controller
 
 
         //mencari data role berdasarkan id
-        $rolesQuery = Role::query();
+        $rolesQuery = Role::withCount('employees');
         if ($id) {
             $role = $rolesQuery->with('responsibilities')->find($id);
 
