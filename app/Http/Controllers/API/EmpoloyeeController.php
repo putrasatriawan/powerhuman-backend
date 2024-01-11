@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EmpoloyeeController extends Controller
 {
@@ -89,11 +91,28 @@ class EmpoloyeeController extends Controller
                 'gender' => $request->gender,
                 'age' => $request->age,
                 'phone' => $request->phone,
-                'photo' =>  isset($path) ? $path : "",
                 'team_id' => $request->team_id,
                 'role_id' => $request->role_id,
             ]);
 
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+
+                $randomString = Str::random(5);
+                $imageName = 'photo-' . time() . '-' . $randomString . '.' . $image->getClientOriginalExtension();
+
+                $path = 'photos';
+                if (!Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->makeDirectory($path);
+                }
+
+
+                Storage::disk('public')->putFileAs($path, $image, $imageName);
+
+                $employee_id = $employee->id;
+
+                Employee::where('id', $employee_id)->update(['photo' => isset($imageName) ? $imageName : ""]);
+            }
             if (!$employee) {
                 throw new Exception('Employee Not Created');
             }
