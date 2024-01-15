@@ -40,23 +40,59 @@ class ResponsibilityController extends Controller
             'Responsibilities found'
         );
     }
-    public function create(CreateResponsibilityRequest $request)
+    // public function create(CreateResponsibilityRequest $request)
+    // {
+    //     try {
+    //         //membuat $responsibility
+    //         $responsibility = Responsibility::create([
+    //             'name' => $request->name,
+    //             'role_id' => $request->role_id,
+    //         ]);
+
+    //         if (!$responsibility) {
+    //             throw new Exception('Responsibility Not Created');
+    //         }
+    //         return ResponseFormatter::success($responsibility, 'Responsibility Created');
+    //     } catch (Exception $e) {
+    //         return ResponseFormatter::error('Responsibility Not Created', 404);
+    //     }
+    // }
+    public function create(Request $request)
     {
         try {
-            //membuat $responsibility
-            $responsibility = Responsibility::create([
-                'name' => $request->name,
-                'role_id' => $request->role_id,
-            ]);
+            $responsibilitiesJson = $request->input('responsibilities');
 
-            if (!$responsibility) {
-                throw new Exception('Responsibility Not Created');
+            if (!$responsibilitiesJson) {
+                throw new \Exception('Invalid or empty responsibilities JSON');
             }
-            return ResponseFormatter::success($responsibility, 'Responsibility Created');
-        } catch (Exception $e) {
-            return ResponseFormatter::error('Responsibility Not Created', 404);
+
+            // Convert JSON to array
+            $responsibilities = json_decode($responsibilitiesJson, true);
+
+            if (json_last_error() != JSON_ERROR_NONE) {
+                throw new \Exception('Error decoding JSON');
+            }
+
+            foreach ($responsibilities as $responsibilityData) {
+                $responsibility = Responsibility::create([
+                    'name' => $responsibilityData['name'],
+                    'role_id' => $responsibilityData['role_id'],
+                ]);
+
+                if (!$responsibility) {
+                    throw new \Exception('Responsibility Not Created');
+                }
+            }
+
+            return ResponseFormatter::success($responsibilities, 'Responsibilities Created');
+        } catch (\Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
+
+
+
+
 
     public function destroy($id)
     {
